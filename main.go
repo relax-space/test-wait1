@@ -2,18 +2,18 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"time"
-
-	"github.com/labstack/echo"
 )
 
 func main() {
-	e := echo.New()
-
 	fmt.Println("wait 1 minute...")
-	time.Sleep(1 * time.Minute)
-	fmt.Println("test-wait1 started")
-	if err := e.Start(":8080"); err != nil {
-		fmt.Println(err)
-	}
+	time.Sleep(5 * time.Second)
+
+	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "pong")
+	})
+	fmt.Println("⇨ test-wait1 started on [::]:8080")
+	http.ListenAndServe(":8080", nil)
+
 }
